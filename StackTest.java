@@ -1,40 +1,98 @@
+import java.util.Scanner;
+
 public class StackTest
 {
   public static void main(String[] args)
   {
+    Scanner input = new Scanner(System.in);
     StackReferenceBased stack = new StackReferenceBased();
+    int choice = 0;
 
-    System.out.println("Empty stack:");
-    stack.displayStack();
+    while (choice != 6)
+    {
+      System.out.println("\nWelcome to StackTest! Please select a number from the list");
+      System.out.println("1. Push a string on to the stack");
+      System.out.println("2. Pop a string from the stack");
+      System.out.println("3. Peek at the top of the stack");
+      System.out.println("4. Empty the stack");
+      System.out.println("5. Check if a string has balanced brackets.");
+      System.out.println("6. Quit the program");
+      System.out.print("Selection: ");
 
-    stack.push("A");
-    stack.push("B");
-    stack.push("C");
-    stack.push("D");
+      try
+      {
+        choice = Integer.parseInt(input.nextLine().trim());
+      }
+      catch (NumberFormatException e)
+      {
+        choice = 0;
+      }
 
-    System.out.println("\nAfter pushing A, B, C, D:");
-    stack.displayStack();
+      switch (choice)
+      {
+        case 1:
+          System.out.print("Enter a string to push: ");
+          String item = input.nextLine();
+          stack.push(item);
+          System.out.println("Pushed: " + item);
+          break;
 
-    System.out.println("\nPopped: " + stack.pop());
-    System.out.println("After one pop:");
-    stack.displayStack();
+        case 2:
+          try
+          {
+            System.out.println("Popped: " + stack.pop());
+          }
+          catch (StackException e)
+          {
+            System.out.println(e.getMessage());
+          }
+          break;
 
-    System.out.println("\nPeek: " + stack.peek());
+        case 3:
+          try
+          {
+            System.out.println("Top of the stack: " + stack.peek());
+          }
+          catch (StackException e)
+          {
+            System.out.println(e.getMessage());
+          }
+          break;
 
-    stack.popAll();
-    System.out.println("\nAfter popAll:");
-    stack.displayStack();
+        case 4:
+          stack.popAll();
+          System.out.println("The stack has been emptied.");
+          break;
 
-    // isBalanced tests
-    System.out.println("\nisBalanced tests:");
-    System.out.println("{}      -> " + isBalanced("{}"));
-    System.out.println("{{}}    -> " + isBalanced("{{}}"));
-    System.out.println("{a{b}c} -> " + isBalanced("{a{b}c}"));
-    System.out.println("{       -> " + isBalanced("{"));
-    System.out.println("}{      -> " + isBalanced("}{"));
-    System.out.println("{{}     -> " + isBalanced("{{}"));
-    System.out.println("{}}     -> " + isBalanced("{}}"));
+        case 5:
+          System.out.print("Enter a string to check: ");
+          String s = input.nextLine();
+          if (isBalanced(s))
+          {
+            System.out.println("\"" + s + "\" has balanced brackets.");
+          }
+          else
+          {
+            System.out.println("\"" + s + "\" does NOT have balanced brackets.");
+          }
+          break;
 
+        case 6:
+          System.out.println("Goodbye!");
+          break;
+
+        default:
+          System.out.println("Invalid selection. Please enter a number from 1 to 6.");
+      }
+
+      if (choice != 6)
+      {
+        System.out.println("\nCurrent stack:");
+        stack.displayStack();
+      }
+    }
+
+    input.close();
   }  // end main
 
   public static boolean isBalanced(String s)
@@ -47,18 +105,18 @@ public class StackTest
 
       if (c == '{')
       {
-        braces.push(c);              // opening brace: push it
+        braces.push(c);              
       }
       else if (c == '}')
       {
         if (braces.isEmpty())
         {
-          return false;              // closing brace with nothing to match
+          return false;              
         }  // end if
-        braces.pop();                // matched a pair
+        braces.pop();                
       }  // end if
     }  // end for
 
-    return braces.isEmpty();         // leftover '{' means unbalanced
+    return braces.isEmpty();         
   }  // end isBalanced
 }  // end StackTest

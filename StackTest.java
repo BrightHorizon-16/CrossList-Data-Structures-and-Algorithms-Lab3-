@@ -24,5 +24,41 @@ public class StackTest
     stack.popAll();
     System.out.println("\nAfter popAll:");
     stack.displayStack();
+
+    // isBalanced tests
+    System.out.println("\nisBalanced tests:");
+    System.out.println("{}      -> " + isBalanced("{}"));
+    System.out.println("{{}}    -> " + isBalanced("{{}}"));
+    System.out.println("{a{b}c} -> " + isBalanced("{a{b}c}"));
+    System.out.println("{       -> " + isBalanced("{"));
+    System.out.println("}{      -> " + isBalanced("}{"));
+    System.out.println("{{}     -> " + isBalanced("{{}"));
+    System.out.println("{}}     -> " + isBalanced("{}}"));
+
   }  // end main
+
+  public static boolean isBalanced(String s)
+  {
+    StackReferenceBased braces = new StackReferenceBased();
+
+    for (int i = 0; i < s.length(); i++)
+    {
+      char c = s.charAt(i);
+
+      if (c == '{')
+      {
+        braces.push(c);              // opening brace: push it
+      }
+      else if (c == '}')
+      {
+        if (braces.isEmpty())
+        {
+          return false;              // closing brace with nothing to match
+        }  // end if
+        braces.pop();                // matched a pair
+      }  // end if
+    }  // end for
+
+    return braces.isEmpty();         // leftover '{' means unbalanced
+  }  // end isBalanced
 }  // end StackTest
